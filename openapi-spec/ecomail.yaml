@@ -1,0 +1,5157 @@
+openapi: 3.0.0
+info:
+  title: Ecomail.cz v2.0 API
+  version: ""
+  description: >-
+    Welcome to the **Ecomail.cz v2.0 API**! Our API provides a powerful and
+    flexible way to integrate your applications with our email marketing and
+    automation platform. This API allows you to manage email campaigns,
+    subscribers, lists, and much more, through our RESTful endpoints.
+
+
+    ## Key Features
+
+
+    + **Subscriber Management**: Create, update, and manage subscribers.
+
+
+    + **List Management**: Organize contacts into lists for targeted campaigns.
+
+
+    + **Campaign Management**: Automate and send campaigns.
+
+
+    + **Transactional Emails**: Send and track transactional emails.
+
+
+    + **Analytics and Reporting**: Access insights into campaign performance.
+
+
+    + **Automation and Workflow**: Establish automated email sequences.
+
+
+    ## Getting Started
+
+
+    All endpoints use base url `https://api2.ecomailapp.cz/`
+
+
+    Before using the API, an **API key is required for authentication**. Obtain your API key from your Ecomail account settings _(Manage your account → Integrations → For developers → Copy API Key)_:
+
+    ![How to find API Key](https://i.imgur.com/ZAJoFcN.png)
+
+    ![How to find API Key](https://i.imgur.com/36U4Ted.png)
+
+    ![How to find API Key](https://i.imgur.com/5JRbJrJ.png)
+
+    ![How to find API Key](https://i.imgur.com/WHCWLMe.png)
+
+
+    **All API calls to the Ecomail.cz v2.0 API require authorization**. To authenticate requests, use a header with your API key.
+
+
+    ### Authentication Header
+
+
+    Every request must include a header named `key` that contains your API key.
+
+
+    `key: API_KEY`
+
+
+    ### Rate Limiting
+
+
+    The API allows up to **1000 calls per minute** per API key. Exceeding this limit will throttle the requests, returning a **429 status code** with a `Retry-After` header.
+paths:
+  /lists:
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  from_name:
+                    type: string
+                  from_email:
+                    type: string
+                  reply_to:
+                    type: string
+                  sub_success_page:
+                    nullable: true
+                  sub_confirmed_page:
+                    nullable: true
+                  unsub_page:
+                    nullable: true
+                  double_optin:
+                    nullable: true
+                  conf_subject:
+                    nullable: true
+                  conf_message:
+                    nullable: true
+                example:
+                  id: 29
+                  name: New list name
+                  from_name: Ecomailapp.cz
+                  from_email: test@ecomailapp.cz
+                  reply_to: support@ecomail.cz
+                  sub_success_page: null
+                  sub_confirmed_page: null
+                  unsub_page: null
+                  double_optin: null
+                  conf_subject: null
+                  conf_message: null
+              examples:
+                response:
+                  value:
+                    id: 29
+                    name: New list name
+                    from_name: Ecomailapp.cz
+                    from_email: test@ecomailapp.cz
+                    reply_to: support@ecomail.cz
+                    sub_success_page: null
+                    sub_confirmed_page: null
+                    unsub_page: null
+                    double_optin: null
+                    conf_subject: null
+                    conf_message: null
+      summary: View all lists
+      operationId: View all lists
+      description: ""
+      tags:
+        - Lists
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    type: number
+                example:
+                  name: New list name
+                  id: 2
+              examples:
+                response:
+                  value:
+                    name: New list name
+                    id: 2
+      summary: Add new list
+      operationId: Add new list
+      description: ""
+      tags:
+        - Lists
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                from_name:
+                  type: string
+                from_email:
+                  type: string
+                reply_to:
+                  type: string
+                sub_success_page:
+                  nullable: true
+                sub_confirmed_page:
+                  nullable: true
+                unsub_page:
+                  nullable: true
+                double_optin:
+                  nullable: true
+                conf_subject:
+                  nullable: true
+                conf_message:
+                  nullable: true
+              example:
+                name: New list name
+                from_name: Ecomailapp.cz
+                from_email: test@ecomailapp.cz
+                reply_to: support@ecomail.cz
+                sub_success_page: null
+                sub_confirmed_page: null
+                unsub_page: null
+                double_optin: null
+                conf_subject: null
+                conf_message: null
+  "/lists/{list_id}":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  list:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      from_name:
+                        type: string
+                      from_email:
+                        type: string
+                      reply_to:
+                        type: string
+                      sub_success_page:
+                        nullable: true
+                      sub_confirmed_page:
+                        type: string
+                      unsub_page:
+                        nullable: true
+                      unsub_from_all:
+                        type: number
+                      unsub_send:
+                        nullable: true
+                      double_optin:
+                        type: boolean
+                      double_optout:
+                        type: number
+                      thanks_send:
+                        nullable: true
+                      thanks_subject:
+                        nullable: true
+                      thanks_message:
+                        nullable: true
+                      conf_subject:
+                        type: string
+                      conf_message:
+                        type: string
+                      unsub_subject:
+                        nullable: true
+                      unsub_message:
+                        nullable: true
+                      custom_fields:
+                        type: object
+                        properties:
+                          date1:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              name:
+                                type: string
+                          size:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              name:
+                                type: string
+                          text:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              name:
+                                type: string
+                          date:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              name:
+                                type: string
+                          url:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              name:
+                                type: string
+                      groups:
+                        type: object
+                        properties:
+                          grp_5e83080ebb988:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              category:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                    id:
+                                      type: string
+                                  required:
+                                    - name
+                                    - id
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          grp_60ddec46df422:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              category:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                    id:
+                                      type: string
+                                  required:
+                                    - name
+                                    - id
+                              id:
+                                type: string
+                              type:
+                                type: string
+                      segments:
+                        type: object
+                        properties:
+                          5c36008811e45:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              id:
+                                type: string
+                              query:
+                                type: array
+                                items:
+                                  type: array
+                                  items: {}
+                              based_on:
+                                nullable: true
+                          5cbf2405a77ce:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              id:
+                                type: string
+                              query:
+                                type: array
+                                items:
+                                  type: array
+                                  items: {}
+                              based_on:
+                                nullable: true
+                      display_settings:
+                        type: array
+                        items:
+                          type: string
+                      unsub_texts:
+                        type: string
+                      created:
+                        type: string
+                      form_settings:
+                        type: object
+                        properties:
+                          settings:
+                            type: object
+                            properties:
+                              logo:
+                                type: string
+                              title_content:
+                                type: string
+                              title_font:
+                                type: string
+                              summary:
+                                type: string
+                              button_text:
+                                type: string
+                              success_message:
+                                type: string
+                              success_redirect:
+                                type: string
+                              success_redirect_after_subcribe:
+                                type: string
+                          fields:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                required:
+                                  type: boolean
+                                label:
+                                  type: string
+                                field:
+                                  type: string
+                              required:
+                                - type
+                                - required
+                                - label
+                                - field
+                          colors:
+                            type: object
+                            properties:
+                              bg_color:
+                                type: string
+                              holder_color:
+                                type: string
+                              submit_color:
+                                type: string
+                              title_color:
+                                type: string
+                              text_color:
+                                type: string
+                              submit_text_color:
+                                type: string
+                      sub_notify:
+                        nullable: true
+                      unsub_notify:
+                        nullable: true
+                      digest_notify:
+                        nullable: true
+                      settings:
+                        type: object
+                        properties:
+                          webhook:
+                            type: object
+                            properties:
+                              url:
+                                type: string
+                          secured_forms:
+                            type: boolean
+                      conf_template:
+                        type: number
+                      active_subscribers:
+                        type: number
+                      sub_notify_validated:
+                        type: array
+                        items: {}
+                      unsub_notify_validated:
+                        type: array
+                        items: {}
+                  subscribers:
+                    type: object
+                    properties:
+                      unknown:
+                        type: number
+                      subscribed:
+                        type: number
+                      unsubscribed:
+                        type: number
+                      soft_bounced:
+                        type: number
+                      hard_bounced:
+                        type: number
+                      complained:
+                        type: number
+                      unconfirmed:
+                        type: number
+                example:
+                  list:
+                    id: "1"
+                    name: List Name
+                    from_name: Sender Name
+                    from_email: sender@example.com
+                    reply_to: reply@example.com
+                    sub_success_page: null
+                    sub_confirmed_page: https://www.example.com/confirm?email=*|EMAIL|*
+                    unsub_page: null
+                    unsub_from_all: 0
+                    unsub_send: null
+                    double_optin: true
+                    double_optout: 0
+                    thanks_send: null
+                    thanks_subject: null
+                    thanks_message: null
+                    conf_subject: Confirmation Subject
+                    conf_message: "Please confirm your subscription: *|SUBCONFIRM|*"
+                    unsub_subject: null
+                    unsub_message: null
+                    custom_fields:
+                      date1:
+                        type: string
+                        name: Date Field
+                      size:
+                        type: int
+                        name: Size Field
+                      text:
+                        type: string
+                        name: Text Field
+                      date:
+                        type: date
+                        name: Date Field
+                      url:
+                        type: url
+                        name: URL Field
+                    groups:
+                      grp_5e83080ebb988:
+                        name: Group 1
+                        category:
+                          - name: Category A
+                            id: plnQNPzCz
+                          - name: Category B
+                            id: doP_rHR1H
+                        id: grp_1
+                        type: select
+                      grp_60ddec46df422:
+                        name: Group 2
+                        category:
+                          - name: Category A
+                            id: RbtolRADM
+                          - name: Category B
+                            id: op4UVh0fZ
+                          - name: Category C
+                            id: PLnepw5xd
+                          - name: Category D
+                            id: 4_k38Yk6B
+                        id: grp_60ddec46df422
+                        type: checkbox
+                    segments:
+                      5c36008811e45:
+                        name: Segment 1
+                        id: 5c36008811e45
+                        query:
+                          - - type: custom_field
+                              field: datum
+                              operator: on
+                              value: 2023-01-01
+                              uid: oXfIW1yvv5
+                              campaign_id: 123
+                              operator_second: in_the_last_hours
+                              in_the_last_value: "2"
+                              isFunction: false
+                        based_on: null
+                      5cbf2405a77ce:
+                        name: Segment 2
+                        id: 5cbf2405a77ce
+                        query:
+                          - - type: tracking
+                              field: null
+                              operator: shopped_in
+                              value: null
+                              uid: NFFQe86Zhs
+                              shop: shop.example.com
+                          - - type: tracking
+                              field: null
+                              operator: any_url
+                              value: null
+                              operator_second: in_the_last
+                              in_the_last_value: "50"
+                              uid: bsIIYbegeE
+                        based_on: null
+                    display_settings:
+                      - subscribed
+                      - status
+                    unsub_texts: Unsubscribe Texts
+                    created: 26.6.2018
+                    form_settings:
+                      settings:
+                        logo: https://www.example.com/logo.png
+                        title_content: Form Title
+                        title_font: Arial
+                        summary: Newsletter signup form
+                        button_text: Subscribe
+                        success_message: Thank you for subscribing!
+                        success_redirect: ""
+                        success_redirect_after_subcribe: ""
+                      fields:
+                        - type: email
+                          required: true
+                          label: Your Email
+                          field: email
+                        - type: text
+                          required: false
+                          label: Name
+                          field: name
+                      colors:
+                        bg_color: "#F8F8F8"
+                        holder_color: "#ffffff"
+                        submit_color: "#1FB161"
+                        title_color: "#080808"
+                        text_color: "#080808"
+                        submit_text_color: "#FFFFFF"
+                    sub_notify: null
+                    unsub_notify: null
+                    digest_notify: null
+                    settings:
+                      webhook:
+                        url: https://www.example.com/webhook
+                      secured_forms: true
+                    conf_template: 123
+                    active_subscribers: 100
+                    sub_notify_validated: []
+                    unsub_notify_validated: []
+                  subscribers:
+                    unknown: 0
+                    subscribed: 375
+                    unsubscribed: 143
+                    soft_bounced: 9
+                    hard_bounced: 11
+                    complained: 1
+                    unconfirmed: 25
+              examples:
+                response:
+                  value:
+                    list:
+                      id: "1"
+                      name: List Name
+                      from_name: Sender Name
+                      from_email: sender@example.com
+                      reply_to: reply@example.com
+                      sub_success_page: null
+                      sub_confirmed_page: https://www.example.com/confirm?email=*|EMAIL|*
+                      unsub_page: null
+                      unsub_from_all: 0
+                      unsub_send: null
+                      double_optin: true
+                      double_optout: 0
+                      thanks_send: null
+                      thanks_subject: null
+                      thanks_message: null
+                      conf_subject: Confirmation Subject
+                      conf_message: "Please confirm your subscription: *|SUBCONFIRM|*"
+                      unsub_subject: null
+                      unsub_message: null
+                      custom_fields:
+                        date1:
+                          type: string
+                          name: Date Field
+                        size:
+                          type: int
+                          name: Size Field
+                        text:
+                          type: string
+                          name: Text Field
+                        date:
+                          type: date
+                          name: Date Field
+                        url:
+                          type: url
+                          name: URL Field
+                      groups:
+                        grp_5e83080ebb988:
+                          name: Group 1
+                          category:
+                            - name: Category A
+                              id: plnQNPzCz
+                            - name: Category B
+                              id: doP_rHR1H
+                          id: grp_1
+                          type: select
+                        grp_60ddec46df422:
+                          name: Group 2
+                          category:
+                            - name: Category A
+                              id: RbtolRADM
+                            - name: Category B
+                              id: op4UVh0fZ
+                            - name: Category C
+                              id: PLnepw5xd
+                            - name: Category D
+                              id: 4_k38Yk6B
+                          id: grp_60ddec46df422
+                          type: checkbox
+                      segments:
+                        5c36008811e45:
+                          name: Segment 1
+                          id: 5c36008811e45
+                          query:
+                            - - type: custom_field
+                                field: datum
+                                operator: on
+                                value: 2023-01-01
+                                uid: oXfIW1yvv5
+                                campaign_id: 123
+                                operator_second: in_the_last_hours
+                                in_the_last_value: "2"
+                                isFunction: false
+                          based_on: null
+                        5cbf2405a77ce:
+                          name: Segment 2
+                          id: 5cbf2405a77ce
+                          query:
+                            - - type: tracking
+                                field: null
+                                operator: shopped_in
+                                value: null
+                                uid: NFFQe86Zhs
+                                shop: shop.example.com
+                            - - type: tracking
+                                field: null
+                                operator: any_url
+                                value: null
+                                operator_second: in_the_last
+                                in_the_last_value: "50"
+                                uid: bsIIYbegeE
+                          based_on: null
+                      display_settings:
+                        - subscribed
+                        - status
+                      unsub_texts: Unsubscribe Texts
+                      created: 26.6.2018
+                      form_settings:
+                        settings:
+                          logo: https://www.example.com/logo.png
+                          title_content: Form Title
+                          title_font: Arial
+                          summary: Newsletter signup form
+                          button_text: Subscribe
+                          success_message: Thank you for subscribing!
+                          success_redirect: ""
+                          success_redirect_after_subcribe: ""
+                        fields:
+                          - type: email
+                            required: true
+                            label: Your Email
+                            field: email
+                          - type: text
+                            required: false
+                            label: Name
+                            field: name
+                        colors:
+                          bg_color: "#F8F8F8"
+                          holder_color: "#ffffff"
+                          submit_color: "#1FB161"
+                          title_color: "#080808"
+                          text_color: "#080808"
+                          submit_text_color: "#FFFFFF"
+                      sub_notify: null
+                      unsub_notify: null
+                      digest_notify: null
+                      settings:
+                        webhook:
+                          url: https://www.example.com/webhook
+                        secured_forms: true
+                      conf_template: 123
+                      active_subscribers: 100
+                      sub_notify_validated: []
+                      unsub_notify_validated: []
+                    subscribers:
+                      unknown: 0
+                      subscribed: 375
+                      unsubscribed: 143
+                      soft_bounced: 9
+                      hard_bounced: 11
+                      complained: 1
+                      unconfirmed: 25
+      summary: Show list
+      operationId: Show list
+      description: ""
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+    put:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  from_name:
+                    type: string
+                  from_email:
+                    type: string
+                  reply_to:
+                    type: string
+                  sub_success_page:
+                    nullable: true
+                  sub_confirmed_page:
+                    nullable: true
+                  unsub_page:
+                    nullable: true
+                  double_optin:
+                    nullable: true
+                  conf_subject:
+                    nullable: true
+                  conf_message:
+                    nullable: true
+                example:
+                  id: 2
+                  name: Updated name
+                  from_name: Ecomailapp.cz
+                  from_email: test@ecomailapp.cz
+                  reply_to: support@ecomail.cz
+                  sub_success_page: null
+                  sub_confirmed_page: null
+                  unsub_page: null
+                  double_optin: null
+                  conf_subject: null
+                  conf_message: null
+              examples:
+                response:
+                  value:
+                    id: 2
+                    name: Updated name
+                    from_name: Ecomailapp.cz
+                    from_email: test@ecomailapp.cz
+                    reply_to: support@ecomail.cz
+                    sub_success_page: null
+                    sub_confirmed_page: null
+                    unsub_page: null
+                    double_optin: null
+                    conf_subject: null
+                    conf_message: null
+      summary: Update list
+      operationId: Update list
+      description: ""
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                from_name:
+                  type: string
+                from_email:
+                  type: string
+                reply_to:
+                  type: string
+                sub_success_page:
+                  nullable: true
+                sub_confirmed_page:
+                  nullable: true
+                unsub_page:
+                  nullable: true
+                double_optin:
+                  nullable: true
+                conf_subject:
+                  nullable: true
+                conf_message:
+                  nullable: true
+              example:
+                name: Updated name
+                from_name: Ecomailapp.cz
+                from_email: test@ecomailapp.cz
+                reply_to: support@ecomail.cz
+                sub_success_page: null
+                sub_confirmed_page: null
+                unsub_page: null
+                double_optin: null
+                conf_subject: null
+                conf_message: null
+  "/lists/{list_id}/subscribers":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+      summary: Get subscribers
+      operationId: Get subscribers
+      description: >-
+        Query parameters:
+
+
+        + _page_ (integer)
+
+
+        + _status_ (optional) (unsubscribed, not_confirmed, bounced, complained)
+
+
+        + _per_page_ (optional) , limit 5000 subscribers per page
+
+
+        ### Response
+
+
+        + _data[status]_ (1: subscribed, 2: unsubscribed, 3: soft bounce, 4: hard bounce, 5: spam complaint, 6: unconfirmed)
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/lists/{list_id}/subscriber/{email}":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriber:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      surname:
+                        type: string
+                      email:
+                        type: string
+                      company:
+                        type: string
+                      street:
+                        type: string
+                      city:
+                        type: string
+                      zip:
+                        type: string
+                      country:
+                        type: string
+                      phone:
+                        type: string
+                      gender:
+                        type: string
+                      nameday:
+                        type: string
+                      birthday:
+                        type: string
+                      vokativ:
+                        type: string
+                      vokativ_s:
+                        type: string
+                      notes:
+                        type: string
+                      source:
+                        type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+                      raynet_id:
+                        type: number
+                      rating:
+                        type: number
+                      inserted_at:
+                        type: string
+                      bounce_soft:
+                        type: number
+                      bounced_hard:
+                        type: number
+                      bounce_message:
+                        nullable: true
+                      bounce_soft_count:
+                        type: number
+                      list_id:
+                        type: number
+                      status:
+                        type: number
+                      subscribed_at:
+                        type: string
+                      unsubscribed_at:
+                        nullable: true
+                      custom_fields:
+                        type: object
+                        properties:
+                          field1:
+                            type: string
+                          field2:
+                            type: string
+                          field3:
+                            type: string
+                      groups:
+                        type: object
+                        properties:
+                          grp_60ddec46df422:
+                            type: array
+                            items:
+                              type: string
+                      sms_status:
+                        type: number
+                      doi_date:
+                        nullable: true
+                      can_change_status:
+                        type: boolean
+                      subscribed_at_utc:
+                        type: string
+                      unsubscribed_at_utc:
+                        nullable: true
+                example:
+                  subscriber:
+                    id: 12345
+                    name: John
+                    surname: Doe
+                    email: john.doe@example.com
+                    company: Acme Corporation
+                    street: 123 Main Street
+                    city: New York
+                    zip: "10001"
+                    country: US
+                    phone: +1 (555) 123-4567
+                    gender: male
+                    nameday: 01-15
+                    birthday: 1990-01-15
+                    vokativ: Johnny
+                    vokativ_s: Doe
+                    notes: This is a sample subscriber.
+                    source: api
+                    tags:
+                      - tag1
+                      - tag2
+                      - tag3
+                    raynet_id: 1001
+                    rating: 4.5
+                    inserted_at: 2022-01-01 12:00:00
+                    bounce_soft: 0
+                    bounced_hard: 0
+                    bounce_message: null
+                    bounce_soft_count: 0
+                    list_id: 42
+                    status: 1
+                    subscribed_at: 2022-01-01T12:00:00.000000Z
+                    unsubscribed_at: null
+                    custom_fields:
+                      field1: Value 1
+                      field2: Value 2
+                      field3: Value 3
+                    groups:
+                      grp_60ddec46df422:
+                        - a
+                        - b
+                    sms_status: 1
+                    doi_date: null
+                    can_change_status: true
+                    subscribed_at_utc: 2022-01-01 12:00:00
+                    unsubscribed_at_utc: null
+              examples:
+                response:
+                  value:
+                    subscriber:
+                      id: 12345
+                      name: John
+                      surname: Doe
+                      email: john.doe@example.com
+                      company: Acme Corporation
+                      street: 123 Main Street
+                      city: New York
+                      zip: "10001"
+                      country: US
+                      phone: +1 (555) 123-4567
+                      gender: male
+                      nameday: 01-15
+                      birthday: 1990-01-15
+                      vokativ: Johnny
+                      vokativ_s: Doe
+                      notes: This is a sample subscriber.
+                      source: api
+                      tags:
+                        - tag1
+                        - tag2
+                        - tag3
+                      raynet_id: 1001
+                      rating: 4.5
+                      inserted_at: 2022-01-01 12:00:00
+                      bounce_soft: 0
+                      bounced_hard: 0
+                      bounce_message: null
+                      bounce_soft_count: 0
+                      list_id: 42
+                      status: 1
+                      subscribed_at: 2022-01-01T12:00:00.000000Z
+                      unsubscribed_at: null
+                      custom_fields:
+                        field1: Value 1
+                        field2: Value 2
+                        field3: Value 3
+                      groups:
+                        grp_60ddec46df422:
+                          - a
+                          - b
+                      sms_status: 1
+                      doi_date: null
+                      can_change_status: true
+                      subscribed_at_utc: 2022-01-01 12:00:00
+                      unsubscribed_at_utc: null
+        "404":
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  errors:
+                    - Subscriber with email foo@bar.cz was not found in the list
+              examples:
+                response:
+                  value:
+                    errors:
+                      - Subscriber with email foo@bar.cz was not found in the
+                        list
+      summary: Get subscriber
+      operationId: Get subscriber
+      description: >-
+        ### Response
+
+
+        + _subscriber[status]_ (1: subscribed, 2: unsubscribed, 3: soft bounce, 4: hard bounce, 5: spam complaint, 6: unconfirmed)
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: email
+          in: path
+          description: Email of the subscriber to get
+          required: true
+          example: foo@bar.cz
+          schema:
+            type: string
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/lists/{list_id}/subscriber-by-phone/{phone}":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriber:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      list_id:
+                        type: number
+                      email:
+                        type: string
+                      status:
+                        type: number
+                      subscribed_at:
+                        type: string
+                      unsubscribed_at:
+                        type: string
+                      custom_fields:
+                        type: object
+                        properties:
+                          ID:
+                            type: string
+                          key:
+                            type: string
+                          url:
+                            type: string
+                      c_fields:
+                        type: string
+                      groups:
+                        nullable: true
+                      source:
+                        type: string
+                      unsub_reason:
+                        nullable: true
+                      status_history:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            date:
+                              type: string
+                            source:
+                              type: string
+                            status_new:
+                              type: number
+                            status_old:
+                              type: number
+                      sms_status:
+                        type: number
+                      doi_date:
+                        nullable: true
+                      can_change_status:
+                        type: boolean
+                      subscribed_at_utc:
+                        type: string
+                      unsubscribed_at_utc:
+                        type: string
+                      subscriber:
+                        nullable: true
+                example:
+                  subscriber:
+                    id: 123456
+                    list_id: 789
+                    email: foo@bar.cz
+                    status: 1
+                    subscribed_at: 2023-01-01T00:00:00.000000Z
+                    unsubscribed_at: 2023-07-01T00:00:00.000000Z
+                    custom_fields:
+                      ID: "123"
+                      key: value
+                      url: https://example.com
+                    c_fields: '{"ID": "123", "key": "value", "url": "https://example.com"}'
+                    groups: null
+                    source: API
+                    unsub_reason: null
+                    status_history:
+                      - date: 2023-07-01 00:00:00
+                        source: API
+                        status_new: 1
+                        status_old: 2
+                    sms_status: 0
+                    doi_date: null
+                    can_change_status: true
+                    subscribed_at_utc: 2023-01-01 02:00:00
+                    unsubscribed_at_utc: 2023-07-01 00:00:00
+                    subscriber: null
+              examples:
+                response:
+                  value:
+                    subscriber:
+                      id: 123456
+                      list_id: 789
+                      email: foo@bar.cz
+                      status: 1
+                      subscribed_at: 2023-01-01T00:00:00.000000Z
+                      unsubscribed_at: 2023-07-01T00:00:00.000000Z
+                      custom_fields:
+                        ID: "123"
+                        key: value
+                        url: https://example.com
+                      c_fields: '{"ID": "123", "key": "value", "url": "https://example.com"}'
+                      groups: null
+                      source: API
+                      unsub_reason: null
+                      status_history:
+                        - date: 2023-07-01 00:00:00
+                          source: API
+                          status_new: 1
+                          status_old: 2
+                      sms_status: 0
+                      doi_date: null
+                      can_change_status: true
+                      subscribed_at_utc: 2023-01-01 02:00:00
+                      unsubscribed_at_utc: 2023-07-01 00:00:00
+                      subscriber: null
+      summary: Get subscriber by phone
+      operationId: Get subscriber by phone
+      description: ""
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: phone
+          in: path
+          description: Phone of the subscriber to get
+          required: true
+          example: "+420111222333"
+          schema:
+            type: string
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/lists/{list_id}/subscribe":
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  email:
+                    type: string
+                  gender:
+                    nullable: true
+                  bounce_soft:
+                    type: number
+                  bounced_hard:
+                    type: number
+                  bounce_message:
+                    nullable: true
+                  inserted_at:
+                    type: string
+                  already_subscribed:
+                    type: boolean
+                example:
+                  id: 259471
+                  name: Jan
+                  surname: Novak
+                  email: jan@novak.cz
+                  gender: null
+                  bounce_soft: 0
+                  bounced_hard: 0
+                  bounce_message: null
+                  inserted_at: 2015-01-21 10:50:04
+                  already_subscribed: true
+              examples:
+                response:
+                  value:
+                    id: 259471
+                    name: Jan
+                    surname: Novak
+                    email: jan@novak.cz
+                    gender: null
+                    bounce_soft: 0
+                    bounced_hard: 0
+                    bounce_message: null
+                    inserted_at: 2015-01-21 10:50:04
+                    already_subscribed: true
+      summary: Add new subscriber to list
+      operationId: Add new subscriber to list
+      description: >-
+        + _subscriber_data_ - information about the subscriber
+
+
+        + _subscriber_data\[email\]_ **(required)** - subscriber's email
+
+
+        + _subscriber_data\[gender\]_ - must be male/female
+
+
+        + _trigger_autoresponders_ (default: false) - trigger automations on subscribe
+
+
+        + _trigger_notification_ (default: false) - send a notification about the subscriber, if set in list settings
+
+
+        + _update_existing_ (default: false) - update an already existing subscriber
+
+
+        + _skip_confirmation_ (default: false) - skip double opt-in confirmation
+
+
+        + _resubscribe_ (default: false) - in case of unsubscribed status force resubscribe
+
+
+        + _custom_fields_ - in case of non-existing field creates a new (string) field with inserted value - type can be defined, see example request (types: string, date, json, int, url)
+
+
+        + _groups_ - overwrites current values (contact has A, B selected in checkbox options, you send only C, contact has only C now, need to send current values + new ones to keep both)
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscriber_data:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    surname:
+                      type: string
+                    email:
+                      type: string
+                    vokativ:
+                      type: string
+                    vokativ_s:
+                      type: string
+                    gender:
+                      type: string
+                    company:
+                      type: string
+                    city:
+                      type: string
+                    street:
+                      type: string
+                    zip:
+                      type: string
+                    country:
+                      type: string
+                    phone:
+                      type: string
+                    pretitle:
+                      type: string
+                    surtitle:
+                      type: string
+                    birthday:
+                      type: string
+                    nameday:
+                      type: string
+                    source:
+                      type: string
+                    custom_fields:
+                      type: object
+                      properties:
+                        SHOP:
+                          type: string
+                        NAME:
+                          type: object
+                          properties:
+                            value:
+                              type: string
+                            type:
+                              type: string
+                        BIRTHDAY:
+                          type: object
+                          properties:
+                            value:
+                              type: string
+                            type:
+                              type: string
+                        FEED:
+                          type: object
+                          properties:
+                            value:
+                              type: string
+                            type:
+                              type: string
+                        NUMBER:
+                          type: object
+                          properties:
+                            value:
+                              type: number
+                            type:
+                              type: string
+                        WEBSITE:
+                          type: object
+                          properties:
+                            value:
+                              type: string
+                            type:
+                              type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                groups:
+                  type: object
+                  properties:
+                    grp_5a145ee75780f:
+                      type: array
+                      items:
+                        type: string
+                trigger_autoresponders:
+                  type: boolean
+                update_existing:
+                  type: boolean
+                resubscribe:
+                  type: boolean
+              example:
+                subscriber_data:
+                  name: Jan
+                  surname: Novak
+                  email: jan@novak.cz
+                  vokativ: Jane
+                  vokativ_s: Nováku
+                  gender: male
+                  company: Company name
+                  city: Praha
+                  street: Národní 15
+                  zip: 100 00
+                  country: CZ
+                  phone: "+420777888999"
+                  pretitle: Ing.
+                  surtitle: Csc.
+                  birthday: 1984-01-01
+                  nameday: 06-24
+                  source: API
+                  custom_fields:
+                    SHOP: myshop.cz
+                    NAME:
+                      value: Jan
+                      type: string
+                    BIRTHDAY:
+                      value: 2022-01-20
+                      type: date
+                    FEED:
+                      value: '{"name":"jan"}'
+                      type: json
+                    NUMBER:
+                      value: 27
+                      type: int
+                    WEBSITE:
+                      value: https://www.myshop.cz
+                      type: url
+                  tags:
+                    - tags
+                groups:
+                  grp_5a145ee75780f:
+                    - Category 1
+                    - Category 2
+                trigger_autoresponders: false
+                update_existing: false
+                resubscribe: false
+  "/lists/{list_id}/unsubscribe":
+    delete:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  list_id:
+                    type: number
+                  email:
+                    type: string
+                  status:
+                    type: number
+                  subscribed_at:
+                    type: string
+                  unsubscribed_at:
+                    type: string
+                  custom_fields:
+                    type: object
+                    properties:
+                      mergetag:
+                        type: string
+                  c_fields:
+                    type: string
+                  groups:
+                    nullable: true
+                  source:
+                    type: string
+                  unsub_reason:
+                    nullable: true
+                  sms_status:
+                    type: number
+                example:
+                  id: 4
+                  list_id: 1
+                  email: foo@bar.cz
+                  status: 2
+                  subscribed_at: 2022-02-07T11:47:53.000000Z
+                  unsubscribed_at: 2022-03-29T10:49:10.000000Z
+                  custom_fields:
+                    mergetag: content
+                  c_fields: '{"mergetag": "content"}'
+                  groups: null
+                  source: api
+                  unsub_reason: null
+                  sms_status: 1
+              examples:
+                response:
+                  value:
+                    id: 4
+                    list_id: 1
+                    email: foo@bar.cz
+                    status: 2
+                    subscribed_at: 2022-02-07T11:47:53.000000Z
+                    unsubscribed_at: 2022-03-29T10:49:10.000000Z
+                    custom_fields:
+                      mergetag: content
+                    c_fields: '{"mergetag": "content"}'
+                    groups: null
+                    source: api
+                    unsub_reason: null
+                    sms_status: 1
+      summary: Remove subscriber from list
+      operationId: Remove subscriber from list
+      description: ""
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Remove_subscriber_from_listBody"
+  "/lists/{list_id}/update-subscriber":
+    put:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  email:
+                    type: string
+                  gender:
+                    type: string
+                  bounce_soft:
+                    type: number
+                  bounce_hard:
+                    nullable: true
+                  bounce_message:
+                    nullable: true
+                  inserted_at:
+                    type: string
+                example:
+                  id: 12345
+                  name: Jan
+                  surname: Novak
+                  email: foo@bar.cz
+                  gender: male
+                  bounce_soft: 0
+                  bounce_hard: null
+                  bounce_message: null
+                  inserted_at: 2022-11-15 13:59:21
+              examples:
+                response:
+                  value:
+                    id: 12345
+                    name: Jan
+                    surname: Novak
+                    email: foo@bar.cz
+                    gender: male
+                    bounce_soft: 0
+                    bounce_hard: null
+                    bounce_message: null
+                    inserted_at: 2022-11-15 13:59:21
+      summary: Update subscriber
+      operationId: Update subscriber
+      description: |-
+        + _email_ **(required)** - subscriber to be updated
+
+        + _subscriber_data_ - subscriber's updated information
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                subscriber_data:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    surname:
+                      type: string
+                    vokativ:
+                      type: string
+                    vokativ_s:
+                      type: string
+                    gender:
+                      type: string
+                    company:
+                      type: string
+                    city:
+                      type: string
+                    street:
+                      type: string
+                    zip:
+                      type: string
+                    country:
+                      type: string
+                    phone:
+                      type: string
+                    pretitle:
+                      type: string
+                    surtitle:
+                      type: string
+                    birthday:
+                      type: string
+                    nameday:
+                      type: string
+                    source:
+                      type: string
+                    custom_fields:
+                      type: object
+                      properties:
+                        SHOP:
+                          type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+              example:
+                email: foo@bar.cz
+                subscriber_data:
+                  name: Jan
+                  surname: Novak
+                  vokativ: Jane
+                  vokativ_s: Nováku
+                  gender: male
+                  company: Company name
+                  city: Praha
+                  street: Národní 15
+                  zip: 100 00
+                  country: CZ
+                  phone: "+420777888999"
+                  pretitle: Ing.
+                  surtitle: Csc.
+                  birthday: 1984-01-01
+                  nameday: 06-24
+                  source: API
+                  custom_fields:
+                    SHOP: myshop.cz
+                  tags:
+                    - tags
+  "/lists/{list_id}/subscribe-bulk":
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inserts:
+                    type: number
+                example:
+                  inserts: 2
+              examples:
+                response:
+                  value:
+                    inserts: 2
+        "422":
+          description: Unprocessable Entity
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        items:
+                          type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                example:
+                  errors:
+                    email:
+                      - email_invalid
+                  data:
+                    name: Foo
+                    email: foo@
+              examples:
+                response:
+                  value:
+                    errors:
+                      email:
+                        - email_invalid
+                    data:
+                      name: Foo
+                      email: foo@
+      summary: Add bulk subscribers to list
+      operationId: Add bulk subscribers to list
+      description: >-
+        + _subscriber_data_ - array of information about a subscriber
+
+
+        + _subscriber_data\[\]\[email\]_ **(required)** - email of a subscriber
+
+
+        + _update_existing_ (default: false) - update an already existing subscriber
+
+
+        + _resubscribe_ (default: false) - in case of unsubscribed status force resubscribe
+
+
+        + _trigger_autoresponders_ (default: false) - trigger automations on subscribe
+
+
+        + _subscriber_data\[\]\[status\]_ (default: 1, 1: subscribed, 2: unsubscribed, 4: hard bounce)
+
+
+        + Contacts always skip confirmation
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the List in form of an integer
+          required: true
+          example: "1"
+          schema:
+            type: number
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscriber_data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      surname:
+                        type: string
+                      email:
+                        type: string
+                      custom_fields:
+                        type: object
+                        properties:
+                          category:
+                            type: string
+                    required:
+                      - name
+                      - surname
+                      - email
+                      - custom_fields
+                update_existing:
+                  type: boolean
+                resubscribe:
+                  type: boolean
+                trigger_autoresponders:
+                  type: boolean
+              example:
+                subscriber_data:
+                  - name: Foo
+                    surname: Bar
+                    email: foo@bar.cz
+                    custom_fields:
+                      category: customer
+                  - name: Foo 2
+                    surname: Bar 2
+                    email: foo2@bar.cz
+                    custom_fields:
+                      category: customer
+                update_existing: false
+                resubscribe: false
+                trigger_autoresponders: false
+  "/subscribers/{email}":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriber:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      surname:
+                        type: string
+                      email:
+                        type: string
+                      gender:
+                        type: string
+                      vokativ:
+                        nullable: true
+                      bounce_soft:
+                        type: number
+                      bounce_soft_count:
+                        type: number
+                      bounced_hard:
+                        type: number
+                      bounce_message:
+                        nullable: true
+                      inserted_at:
+                        type: string
+                      last_position:
+                        nullable: true
+                      rating:
+                        type: number
+                      nameday:
+                        nullable: true
+                      source:
+                        nullable: true
+                      company:
+                        nullable: true
+                      street:
+                        nullable: true
+                      city:
+                        nullable: true
+                      country:
+                        type: string
+                      zip:
+                        nullable: true
+                      phone:
+                        nullable: true
+                      pretitle:
+                        nullable: true
+                      surtitle:
+                        nullable: true
+                      birthday:
+                        nullable: true
+                      notes:
+                        type: string
+                      vokativ_s:
+                        type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+                      last_open:
+                        nullable: true
+                      last_click:
+                        nullable: true
+                      last_pageview:
+                        nullable: true
+                      last_transaction_id:
+                        nullable: true
+                      last_transaction:
+                        nullable: true
+                      automations:
+                        nullable: true
+                      lists:
+                        type: object
+                        properties:
+                          "1":
+                            type: object
+                            properties:
+                              id:
+                                type: number
+                              list_id:
+                                type: number
+                              email:
+                                type: string
+                              status:
+                                type: number
+                              subscribed_at:
+                                type: string
+                              unsubscribed_at:
+                                nullable: true
+                              custom_fields:
+                                type: object
+                                properties:
+                                  somefield:
+                                    type: string
+                              c_fields:
+                                type: string
+                              groups:
+                                nullable: true
+                              source:
+                                type: string
+                              unsub_reason:
+                                nullable: true
+                              status_history:
+                                type: array
+                                items: {}
+                              sms_status:
+                                type: number
+                              doi_date:
+                                nullable: true
+                              owner:
+                                type: object
+                                properties:
+                                  id:
+                                    type: number
+                                  name:
+                                    type: string
+                                  groups:
+                                    type: object
+                                    properties:
+                                      grp_63739cda09773:
+                                        type: object
+                                        properties:
+                                          name:
+                                            type: string
+                                          category:
+                                            type: array
+                                            items:
+                                              type: object
+                                              properties:
+                                                name:
+                                                  type: string
+                                                id:
+                                                  type: string
+                                              required:
+                                                - name
+                                                - id
+                                          id:
+                                            type: string
+                                          type:
+                                            type: string
+                                  active_subscribers:
+                                    type: number
+                example:
+                  subscriber:
+                    name: Foo
+                    surname: Bar
+                    email: foo@bar.cz
+                    gender: male
+                    vokativ: null
+                    bounce_soft: 0
+                    bounce_soft_count: 0
+                    bounced_hard: 0
+                    bounce_message: null
+                    inserted_at: 2018-11-15 13:59:21
+                    last_position: null
+                    rating: 2.5
+                    nameday: null
+                    source: null
+                    company: null
+                    street: null
+                    city: null
+                    country: CZ
+                    zip: null
+                    phone: null
+                    pretitle: null
+                    surtitle: null
+                    birthday: null
+                    notes: ""
+                    vokativ_s: Bare
+                    tags:
+                      - Completed
+                      - SomeTag
+                    last_open: null
+                    last_click: null
+                    last_pageview: null
+                    last_transaction_id: null
+                    last_transaction: null
+                    automations: null
+                    lists:
+                      "1":
+                        id: 407704
+                        list_id: 1
+                        email: foo@bar.cz
+                        status: 1
+                        subscribed_at: 2018-11-15T12:59:21.000000Z
+                        unsubscribed_at: null
+                        custom_fields:
+                          somefield: ""
+                        c_fields: '{"somefield": ""}'
+                        groups: null
+                        source: app
+                        unsub_reason: null
+                        status_history: []
+                        sms_status: 1
+                        doi_date: null
+                        owner:
+                          id: 1
+                          name: První seznam
+                          groups:
+                            grp_63739cda09773:
+                              name: My group
+                              category:
+                                - name: Category 1
+                                  id: 2n3nZAlfE
+                                - name: Category 2
+                                  id: CyCZLMhS0
+                              id: grp_63739cda09773
+                              type: checkbox
+                          active_subscribers: 0
+              examples:
+                response:
+                  value:
+                    subscriber:
+                      name: Foo
+                      surname: Bar
+                      email: foo@bar.cz
+                      gender: male
+                      vokativ: null
+                      bounce_soft: 0
+                      bounce_soft_count: 0
+                      bounced_hard: 0
+                      bounce_message: null
+                      inserted_at: 2018-11-15 13:59:21
+                      last_position: null
+                      rating: 2.5
+                      nameday: null
+                      source: null
+                      company: null
+                      street: null
+                      city: null
+                      country: CZ
+                      zip: null
+                      phone: null
+                      pretitle: null
+                      surtitle: null
+                      birthday: null
+                      notes: ""
+                      vokativ_s: Bare
+                      tags:
+                        - Completed
+                        - SomeTag
+                      last_open: null
+                      last_click: null
+                      last_pageview: null
+                      last_transaction_id: null
+                      last_transaction: null
+                      automations: null
+                      lists:
+                        "1":
+                          id: 407704
+                          list_id: 1
+                          email: foo@bar.cz
+                          status: 1
+                          subscribed_at: 2018-11-15T12:59:21.000000Z
+                          unsubscribed_at: null
+                          custom_fields:
+                            somefield: ""
+                          c_fields: '{"somefield": ""}'
+                          groups: null
+                          source: app
+                          unsub_reason: null
+                          status_history: []
+                          sms_status: 1
+                          doi_date: null
+                          owner:
+                            id: 1
+                            name: První seznam
+                            groups:
+                              grp_63739cda09773:
+                                name: My group
+                                category:
+                                  - name: Category 1
+                                    id: 2n3nZAlfE
+                                  - name: Category 2
+                                    id: CyCZLMhS0
+                                id: grp_63739cda09773
+                                type: checkbox
+                            active_subscribers: 0
+      summary: Get subscriber details
+      operationId: Get subscriber details
+      description: ""
+      tags:
+        - Subscribers
+      parameters:
+        - name: email
+          in: path
+          description: email of a subscriber
+          required: true
+          example: foo@bar.cz
+          schema:
+            type: string
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/subscribers/{email}/delete":
+    delete:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                example:
+                  deleted: true
+              examples:
+                response:
+                  value:
+                    deleted: true
+      summary: Remove subscriber from db
+      operationId: Remove subscriber from db
+      description: ""
+      tags:
+        - Subscribers
+      parameters:
+        - name: email
+          in: path
+          description: email of subscriber
+          required: true
+          example: foo@bar.cz
+          schema:
+            type: string
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  /campaigns:
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+      summary: List All Campaigns
+      operationId: List All Campaigns
+      description: ""
+      tags:
+        - Campaigns
+      parameters:
+        - name: page
+          in: query
+          description: Page number, results are paginated by 50 records
+          required: false
+          schema:
+            type: string
+        - name: filters
+          in: query
+          description: |-
+            Filters to filter results.
+
+            valid filters: status
+                Example: `/campaigns?filters[status]=1`
+          required: false
+          style: form
+          explode: false
+          schema:
+            type: array
+            items: {}
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  title:
+                    type: string
+                  from_name:
+                    type: string
+                  from_email:
+                    type: string
+                  reply_to:
+                    type: string
+                  subject:
+                    type: string
+                  recepient_lists:
+                    type: object
+                    properties:
+                      segments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            list:
+                              type: number
+                  template_type:
+                    type: string
+                  campaign_type:
+                    type: string
+                  updated_at:
+                    type: string
+                  created_at:
+                    nullable: true
+                  archive_url:
+                    nullable: true
+                example:
+                  id: 713
+                  title: Campaign title
+                  from_name: Senders name
+                  from_email: test@ecomailapp.cz
+                  reply_to: test@ecomailapp.cz
+                  subject: New campaign subject
+                  recepient_lists:
+                    segments:
+                      - id: 5ebd0ef549f63
+                        list: 14
+                  template_type: html
+                  campaign_type: email
+                  updated_at: 2023-06-14T10:16:58.704024Z
+                  created_at: null
+                  archive_url: null
+              examples:
+                response:
+                  value:
+                    id: 713
+                    title: Campaign title
+                    from_name: Senders name
+                    from_email: test@ecomailapp.cz
+                    reply_to: test@ecomailapp.cz
+                    subject: New campaign subject
+                    recepient_lists:
+                      segments:
+                        - id: 5ebd0ef549f63
+                          list: 14
+                    template_type: html
+                    campaign_type: email
+                    updated_at: 2023-06-14T10:16:58.704024Z
+                    created_at: null
+                    archive_url: null
+      summary: Add new campaign
+      operationId: Add new campaign
+      description: ""
+      tags:
+        - Campaigns
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                from_name:
+                  type: string
+                from_email:
+                  type: string
+                reply_to:
+                  type: string
+                subject:
+                  type: string
+                html_text:
+                  type: string
+                recepient_lists:
+                  type: array
+                  items:
+                    type: number
+              example:
+                title: Campaign title
+                from_name: Senders name
+                from_email: test@ecomailapp.cz
+                reply_to: test@ecomailapp.cz
+                subject: New campaign subject
+                html_text: HTML content of new campaign
+                recepient_lists:
+                  - 1
+  "/campaigns/{campaign_id}":
+    put:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  from_name:
+                    type: string
+                  from_email:
+                    type: string
+                  reply_to:
+                    type: string
+                  title:
+                    type: string
+                  subject:
+                    type: string
+                  ga:
+                    type: string
+                  sent_at:
+                    type: string
+                  changed_at:
+                    type: string
+                  recipients:
+                    type: number
+                  inserted:
+                    type: string
+                  status:
+                    type: number
+                  scheduled_at:
+                    nullable: true
+                  template_id:
+                    type: number
+                  archive_url:
+                    type: string
+                  attachments:
+                    type: string
+                example:
+                  id: 1
+                  from_name: From name
+                  from_email: from@foo.cz
+                  reply_to: reply@bar.cz
+                  title: My first campaign
+                  subject: First hello
+                  ga: ga_tracking_code
+                  sent_at: 2014-09-08 22:04:03
+                  changed_at: 2014-09-08 22:04:04
+                  recipients: 1
+                  inserted: 2014-09-08 14:41:31
+                  status: 0
+                  scheduled_at: null
+                  template_id: 62
+                  archive_url: https://foo.ecomailapp.cz/campaigns/render/1
+                  attachments: N;
+              examples:
+                response:
+                  value:
+                    id: 1
+                    from_name: From name
+                    from_email: from@foo.cz
+                    reply_to: reply@bar.cz
+                    title: My first campaign
+                    subject: First hello
+                    ga: ga_tracking_code
+                    sent_at: 2014-09-08 22:04:03
+                    changed_at: 2014-09-08 22:04:04
+                    recipients: 1
+                    inserted: 2014-09-08 14:41:31
+                    status: 0
+                    scheduled_at: null
+                    template_id: 62
+                    archive_url: https://foo.ecomailapp.cz/campaigns/render/1
+                    attachments: N;
+      summary: Update campaign
+      operationId: Update campaign
+      description: ""
+      tags:
+        - Campaigns
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                from_name:
+                  type: string
+                from_email:
+                  type: string
+                reply_to:
+                  type: string
+                subject:
+                  type: string
+                html_text:
+                  type: string
+                recepient_lists:
+                  type: array
+                  items:
+                    type: number
+              example:
+                title: Campaign title
+                from_name: Senders name
+                from_email: test@ecomailapp.cz
+                reply_to: test@ecomailapp.cz
+                subject: New campaign subject
+                html_text: HTML content of new campaign
+                recepient_lists:
+                  - 1
+                  - 2
+  "/campaign/{campaign_id}/send":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    title:
+                      type: string
+                    from_name:
+                      type: string
+                    from_email:
+                      type: string
+                    reply_to:
+                      type: string
+                    subject:
+                      type: string
+                    recepient_lists:
+                      type: array
+                      items:
+                        type: number
+                    template_type:
+                      type: string
+                    campaign_type:
+                      type: string
+                    updated_at:
+                      type: string
+                    created_at:
+                      type: string
+                    archive_url:
+                      nullable: true
+                example:
+                  - id: 1
+                    title: My first campaign
+                    from_name: From name
+                    from_email: from@foo.cz
+                    reply_to: reply@bar.cz
+                    subject: First hello
+                    recepient_lists:
+                      - 1
+                      - 2
+                    template_type: html
+                    campaign_type: email
+                    updated_at: 2022-08-24T09:37:36.454443Z
+                    created_at: 2022-08-24T09:37:36.454443Z
+                    archive_url: null
+              examples:
+                response:
+                  value:
+                    - id: 1
+                      title: My first campaign
+                      from_name: From name
+                      from_email: from@foo.cz
+                      reply_to: reply@bar.cz
+                      subject: First hello
+                      recepient_lists:
+                        - 1
+                        - 2
+                      template_type: html
+                      campaign_type: email
+                      updated_at: 2022-08-24T09:37:36.454443Z
+                      created_at: 2022-08-24T09:37:36.454443Z
+                      archive_url: null
+      summary: Send campaign
+      operationId: Send campaign
+      description: |-
+        This endpoint puts the campaign to the sending queue immediately.
+
+        This action is irreversible!
+      tags:
+        - Campaigns
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/campaigns/{campaign_id}/stats":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stats:
+                    type: object
+                    properties:
+                      inject:
+                        type: number
+                      delivery:
+                        type: number
+                      delivery_rate:
+                        type: number
+                      open:
+                        type: number
+                      total_open:
+                        type: number
+                      open_rate:
+                        type: number
+                      click:
+                        type: number
+                      total_click:
+                        type: number
+                      click_rate:
+                        type: number
+                      bounce:
+                        type: number
+                      bounce_rate:
+                        type: number
+                      spam:
+                        type: number
+                      spam_rate:
+                        type: number
+                      unsub:
+                        type: number
+                      unsub_rate:
+                        type: number
+                      conversions:
+                        type: number
+                      conversions_value:
+                        type: number
+                example:
+                  stats:
+                    inject: 10
+                    delivery: 10
+                    delivery_rate: 97
+                    open: 5
+                    total_open: 10
+                    open_rate: 10
+                    click: 2
+                    total_click: 4
+                    click_rate: 4
+                    bounce: 3
+                    bounce_rate: 3
+                    spam: 1
+                    spam_rate: 0.01
+                    unsub: 1
+                    unsub_rate: 1
+                    conversions: 0
+                    conversions_value: 0
+              examples:
+                response:
+                  value:
+                    stats:
+                      inject: 10
+                      delivery: 10
+                      delivery_rate: 97
+                      open: 5
+                      total_open: 10
+                      open_rate: 10
+                      click: 2
+                      total_click: 4
+                      click_rate: 4
+                      bounce: 3
+                      bounce_rate: 3
+                      spam: 1
+                      spam_rate: 0.01
+                      unsub: 1
+                      unsub_rate: 1
+                      conversions: 0
+                      conversions_value: 0
+      summary: Get campaign stats
+      operationId: Get campaign stats
+      description: Returns the statistics of a campaign specified by the campaign_id.
+      tags:
+        - Campaigns
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/campaigns/{id}/stats-detail":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  next_page_url:
+                    type: string
+                  total:
+                    type: number
+                  per_page:
+                    type: number
+                  subscribers:
+                    type: object
+                    properties:
+                      foo@bar.com:
+                        type: object
+                        properties:
+                          open:
+                            type: number
+                          send:
+                            type: number
+                          unsub:
+                            type: number
+                          soft_bounce:
+                            type: number
+                          click:
+                            type: number
+                          hard_bounce:
+                            type: number
+                          out_of_band:
+                            type: number
+                          spam:
+                            type: number
+                          spam_complaint:
+                            type: number
+                      foo2@bar.com:
+                        type: object
+                        properties:
+                          open:
+                            type: number
+                          send:
+                            type: number
+                          unsub:
+                            type: number
+                          soft_bounce:
+                            type: number
+                          click:
+                            type: number
+                          hard_bounce:
+                            type: number
+                          out_of_band:
+                            type: number
+                          spam:
+                            type: number
+                          spam_complaint:
+                            type: number
+                example:
+                  next_page_url: http://api2.ecomailapp.cz/campaigns/12345/stats-detail?page=2
+                  total: 4256
+                  per_page: 100
+                  subscribers:
+                    foo@bar.com:
+                      open: 2
+                      send: 1
+                      unsub: 0
+                      soft_bounce: 0
+                      click: 1
+                      hard_bounce: 0
+                      out_of_band: 0
+                      spam: 0
+                      spam_complaint: 0
+                    foo2@bar.com:
+                      open: 4
+                      send: 1
+                      unsub: 0
+                      soft_bounce: 0
+                      click: 2
+                      hard_bounce: 0
+                      out_of_band: 0
+                      spam: 0
+                      spam_complaint: 0
+              examples:
+                response:
+                  value:
+                    next_page_url: http://api2.ecomailapp.cz/campaigns/12345/stats-detail?page=2
+                    total: 4256
+                    per_page: 100
+                    subscribers:
+                      foo@bar.com:
+                        open: 2
+                        send: 1
+                        unsub: 0
+                        soft_bounce: 0
+                        click: 1
+                        hard_bounce: 0
+                        out_of_band: 0
+                        spam: 0
+                        spam_complaint: 0
+                      foo2@bar.com:
+                        open: 4
+                        send: 1
+                        unsub: 0
+                        soft_bounce: 0
+                        click: 2
+                        hard_bounce: 0
+                        out_of_band: 0
+                        spam: 0
+                        spam_complaint: 0
+      summary: Get campaign stats-detail
+      operationId: Get campaign stats-detail
+      description: ""
+      tags:
+        - Campaigns
+      parameters:
+        - name: id
+          in: path
+          description: required, id of the campaign
+          required: true
+          example: "12345"
+          schema:
+            type: integer
+        - name: event
+          in: query
+          description: "optional, filter by: open, send, unsub, soft_bounce, click,
+            hard_bounce, out_of_band, spam"
+          required: false
+          example: open
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: optional, filter by email
+          required: false
+          example: foo@bar.com
+          schema:
+            type: string
+        - name: from_date
+          in: query
+          description: optional, filter by contacts with events from set date onwards
+            (YYYY-MM-DD format)
+          required: false
+          example: 2023-01-20
+          schema:
+            type: string
+        - name: per_page
+          in: query
+          description: optional, returns x number of results per response instead of
+            default 100, a limit of 5000 per page
+          required: false
+          example: "300"
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: optional, returns results from page x
+          required: false
+          example: "2"
+          schema:
+            type: integer
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  /pipelines:
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    name:
+                      type: string
+                    list_id:
+                      type: number
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                example:
+                  - id: 1
+                    name: Pipeline name
+                    list_id: 1
+                    created_at: 2020-09-08 22:04:03
+                    updated_at: 2021-04-03 20:04:04
+              examples:
+                response:
+                  value:
+                    - id: 1
+                      name: Pipeline name
+                      list_id: 1
+                      created_at: 2020-09-08 22:04:03
+                      updated_at: 2021-04-03 20:04:04
+      summary: List All Automations
+      operationId: List All Automations
+      description: ""
+      tags:
+        - Automations
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/pipelines/{pipeline_id}/trigger/":
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                example:
+                  email: foo@bar.cz
+              examples:
+                response:
+                  value:
+                    email: foo@bar.cz
+      summary: Trigger automation
+      operationId: Trigger automation
+      description: ""
+      tags:
+        - Automations
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Remove_subscriber_from_listBody"
+  "/pipelines/{pipeline_id}/stats":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stats:
+                    type: object
+                    properties:
+                      triggered:
+                        type: number
+                      ended:
+                        type: number
+                      open:
+                        type: number
+                      open_rate:
+                        type: number
+                      total_open:
+                        type: number
+                      not_opened:
+                        type: number
+                      send:
+                        type: number
+                      click:
+                        type: number
+                      total_click:
+                        type: number
+                      click_rate:
+                        type: number
+                      ctr:
+                        type: number
+                      inject:
+                        type: number
+                      soft_bounce:
+                        type: number
+                      hard_bounce:
+                        type: number
+                      out_of_band:
+                        type: number
+                      bounce:
+                        type: number
+                      bounce_rate:
+                        type: number
+                      conversions:
+                        type: number
+                      conversions_value:
+                        type: number
+                      spam:
+                        type: number
+                      unsub:
+                        type: number
+                      sms_sent:
+                        type: number
+                      sms_inv_nr:
+                        type: number
+                      delivery_rate:
+                        type: number
+                      pipeline_id:
+                        type: number
+                      account:
+                        type: string
+                example:
+                  stats:
+                    triggered: 1
+                    ended: 1
+                    open: 0
+                    open_rate: 0
+                    total_open: 0
+                    not_opened: 2
+                    send: 2
+                    click: 1
+                    total_click: 4
+                    click_rate: 50
+                    ctr: 0
+                    inject: 2
+                    soft_bounce: 0
+                    hard_bounce: 0
+                    out_of_band: 0
+                    bounce: 0
+                    bounce_rate: 0
+                    conversions: 0
+                    conversions_value: 0
+                    spam: 0
+                    unsub: 0
+                    sms_sent: 0
+                    sms_inv_nr: 0
+                    delivery_rate: 100
+                    pipeline_id: 4
+                    account: mujucet
+              examples:
+                response:
+                  value:
+                    stats:
+                      triggered: 1
+                      ended: 1
+                      open: 0
+                      open_rate: 0
+                      total_open: 0
+                      not_opened: 2
+                      send: 2
+                      click: 1
+                      total_click: 4
+                      click_rate: 50
+                      ctr: 0
+                      inject: 2
+                      soft_bounce: 0
+                      hard_bounce: 0
+                      out_of_band: 0
+                      bounce: 0
+                      bounce_rate: 0
+                      conversions: 0
+                      conversions_value: 0
+                      spam: 0
+                      unsub: 0
+                      sms_sent: 0
+                      sms_inv_nr: 0
+                      delivery_rate: 100
+                      pipeline_id: 4
+                      account: mujucet
+      summary: Get automation stats
+      operationId: Get automation stats
+      description: ""
+      tags:
+        - Automations
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/pipelines/{pipeline_id}/stats-detail":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  next_page_url:
+                    type: string
+                  total:
+                    type: number
+                  per_page:
+                    type: number
+                  subscribers:
+                    type: object
+                    properties:
+                      foo@bar.com:
+                        type: object
+                        properties:
+                          open:
+                            type: number
+                          send:
+                            type: number
+                          unsub:
+                            type: number
+                          soft_bounce:
+                            type: number
+                          click:
+                            type: number
+                          hard_bounce:
+                            type: number
+                          out_of_band:
+                            type: number
+                          spam:
+                            type: number
+                          spam_complaint:
+                            type: number
+                      foo2@bar.com:
+                        type: object
+                        properties:
+                          open:
+                            type: number
+                          send:
+                            type: number
+                          unsub:
+                            type: number
+                          soft_bounce:
+                            type: number
+                          click:
+                            type: number
+                          hard_bounce:
+                            type: number
+                          out_of_band:
+                            type: number
+                          spam:
+                            type: number
+                          spam_complaint:
+                            type: number
+                example:
+                  next_page_url: http://api2.ecomailapp.cz/pipelines/12345/stats-detail?page=2
+                  total: 2546
+                  per_page: 100
+                  subscribers:
+                    foo@bar.com:
+                      open: 2
+                      send: 3
+                      unsub: 0
+                      soft_bounce: 0
+                      click: 0
+                      hard_bounce: 0
+                      out_of_band: 0
+                      spam: 0
+                      spam_complaint: 0
+                    foo2@bar.com:
+                      open: 5
+                      send: 3
+                      unsub: 0
+                      soft_bounce: 0
+                      click: 1
+                      hard_bounce: 0
+                      out_of_band: 0
+                      spam: 0
+                      spam_complaint: 0
+              examples:
+                response:
+                  value:
+                    next_page_url: http://api2.ecomailapp.cz/pipelines/12345/stats-detail?page=2
+                    total: 2546
+                    per_page: 100
+                    subscribers:
+                      foo@bar.com:
+                        open: 2
+                        send: 3
+                        unsub: 0
+                        soft_bounce: 0
+                        click: 0
+                        hard_bounce: 0
+                        out_of_band: 0
+                        spam: 0
+                        spam_complaint: 0
+                      foo2@bar.com:
+                        open: 5
+                        send: 3
+                        unsub: 0
+                        soft_bounce: 0
+                        click: 1
+                        hard_bounce: 0
+                        out_of_band: 0
+                        spam: 0
+                        spam_complaint: 0
+      summary: Get automation stats-detail
+      operationId: Get automation stats-detail
+      description: ""
+      tags:
+        - Automations
+      parameters:
+        - name: pipeline_id
+          in: path
+          description: required, id of the automation
+          required: true
+          example: "12345"
+          schema:
+            type: integer
+        - name: event
+          in: query
+          description: "optional, filter by: open, send, unsub, soft_bounce, click,
+            hard_bounce, out_of_band, spam"
+          required: false
+          example: open
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: optional, filter by email
+          required: false
+          example: foo@bar.com
+          schema:
+            type: string
+        - name: from_date
+          in: query
+          description: optional, filter by contacts with events from set date onwards
+            (YYYY-MM-DD format)
+          required: false
+          example: 2023-01-20
+          schema:
+            type: string
+        - name: per_page
+          in: query
+          description: optional, returns x number of results per response instead of
+            default 100, a limit of 5000 per page
+          required: false
+          example: "300"
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: optional, returns results from page x
+          required: false
+          example: "2"
+          schema:
+            type: integer
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  /template:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  html:
+                    type: string
+                example:
+                  id: 1
+                  name: New Template
+                  html: <b>Template HTML</b>
+              examples:
+                response:
+                  value:
+                    id: 1
+                    name: New Template
+                    html: <b>Template HTML</b>
+      summary: Create a new template
+      operationId: Create a new template
+      description: ""
+      tags:
+        - Templates
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                html:
+                  type: string
+              example:
+                name: New Template
+                html: <b>Template HTML</b>
+  "/template/{id}":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  folder:
+                    type: number
+                  name:
+                    type: string
+                  html:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                example:
+                  id: 1234
+                  folder: 0
+                  name: Some Template Name
+                  html: <html>Html code here...</html>
+                  created_at: 2024-02-12 15:13:16
+                  updated_at: 2024-02-12 15:13:26
+              examples:
+                response:
+                  value:
+                    id: 1234
+                    folder: 0
+                    name: Some Template Name
+                    html: <html>Html code here...</html>
+                    created_at: 2024-02-12 15:13:16
+                    updated_at: 2024-02-12 15:13:26
+      summary: Get template
+      operationId: Get template
+      description: ""
+      tags:
+        - Templates
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  /domains:
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    name:
+                      type: string
+                    valid:
+                      type: number
+                  required:
+                    - id
+                    - name
+                    - valid
+                example:
+                  - id: 1
+                    name: foo.cz
+                    valid: 1
+                  - id: 2
+                    name: bar.cz
+                    valid: 0
+              examples:
+                response:
+                  value:
+                    - id: 1
+                      name: foo.cz
+                      valid: 1
+                    - id: 2
+                      name: bar.cz
+                      valid: 0
+      summary: List All Domains
+      operationId: List All Domains
+      description: ""
+      tags:
+        - Domains
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+    post:
+      responses:
+        "201":
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  valid:
+                    type: number
+                example:
+                  id: 1
+                  name: newdomain.cz
+                  valid: 0
+              examples:
+                response:
+                  value:
+                    id: 1
+                    name: newdomain.cz
+                    valid: 0
+      summary: Create a new domain
+      operationId: Create a new domain
+      description: ""
+      tags:
+        - Domains
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Create_a_new_domainBody"
+  "/domains/{domain_id}":
+    delete:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  valid:
+                    type: number
+                example:
+                  id: 1
+                  name: newdomain.cz
+                  valid: 0
+              examples:
+                response:
+                  value:
+                    id: 1
+                    name: newdomain.cz
+                    valid: 0
+      summary: Delete a domain
+      operationId: Delete a domain
+      description: ""
+      tags:
+        - Domains
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Create_a_new_domainBody"
+  /transactional/send-message:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: object
+                    properties:
+                      total_rejected_recipients:
+                        type: number
+                      total_accepted_recipients:
+                        type: number
+                      id:
+                        type: number
+                example:
+                  results:
+                    total_rejected_recipients: 0
+                    total_accepted_recipients: 2
+                    id: 11668787484950528
+              examples:
+                response:
+                  value:
+                    results:
+                      total_rejected_recipients: 0
+                      total_accepted_recipients: 2
+                      id: 11668787484950528
+      summary: Send transactional email
+      operationId: Send transactional email
+      description: ""
+      tags:
+        - Transactional emails
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: object
+                  properties:
+                    subject:
+                      type: string
+                    from_name:
+                      type: string
+                    from_email:
+                      type: string
+                    reply_to:
+                      type: string
+                    text:
+                      type: string
+                    html:
+                      type: string
+                    amp_html:
+                      type: string
+                    to:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          email:
+                            type: string
+                          name:
+                            type: string
+                          cc:
+                            type: string
+                          bcc:
+                            type: string
+                    global_merge_vars:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          content:
+                            type: string
+                    attachments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          name:
+                            type: string
+                          content:
+                            type: string
+                    options:
+                      type: object
+                      properties:
+                        click_tracking:
+                          type: boolean
+                        open_tracking:
+                          type: boolean
+              example:
+                message:
+                  subject: Email subject
+                  from_name: Sender's name
+                  from_email: foo@bar.cz
+                  reply_to: foo@bar.cz
+                  text: Plain text content
+                  html: <b>Email HTML content</b>
+                  amp_html: AMP HTML content
+                  to:
+                    - email: to@me.com
+                      name: Recipient's name
+                      cc: cc@me.com
+                      bcc: bcc@me.com
+                  global_merge_vars:
+                    - name: mergeTagName
+                      content: mergeTagValue
+                  attachments:
+                    - type: mime/type
+                      name: attachment-name.pdf
+                      content: base64encodedcontent
+                  options:
+                    click_tracking: true
+                    open_tracking: true
+  /transactional/send-template:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: object
+                    properties:
+                      total_rejected_recipients:
+                        type: number
+                      total_accepted_recipients:
+                        type: number
+                      id:
+                        type: number
+                example:
+                  results:
+                    total_rejected_recipients: 0
+                    total_accepted_recipients: 2
+                    id: 11668787484950528
+              examples:
+                response:
+                  value:
+                    results:
+                      total_rejected_recipients: 0
+                      total_accepted_recipients: 2
+                      id: 11668787484950528
+      summary: Send transactional template
+      operationId: Send transactional template
+      description: ""
+      tags:
+        - Transactional emails
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: object
+                  properties:
+                    template_id:
+                      type: number
+                    subject:
+                      type: string
+                    from_name:
+                      type: string
+                    from_email:
+                      type: string
+                    reply_to:
+                      type: string
+                    to:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          email:
+                            type: string
+                          name:
+                            type: string
+                          cc:
+                            type: string
+                          bcc:
+                            type: string
+                    global_merge_vars:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          content:
+                            type: string
+                    attachments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          name:
+                            type: string
+                          content:
+                            type: string
+                    options:
+                      type: object
+                      properties:
+                        click_tracking:
+                          type: boolean
+                        open_tracking:
+                          type: boolean
+              example:
+                message:
+                  template_id: 1
+                  subject: Email subject
+                  from_name: Sender's name
+                  from_email: foo@bar.cz
+                  reply_to: foo@bar.cz
+                  to:
+                    - email: to@me.com
+                      name: Recipient's name
+                      cc: cc@me.com
+                      bcc: bcc@me.com
+                  global_merge_vars:
+                    - name: mergeTagName
+                      content: mergeTagValue
+                  attachments:
+                    - type: mime/type
+                      name: attachment-name.pdf
+                      content: base64encodedcontent
+                  options:
+                    click_tracking: true
+                    open_tracking: true
+  /transactional/stats:
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stats:
+                    type: object
+                    properties:
+                      open_rate:
+                        type: number
+                      click_rate:
+                        type: number
+                      ctr:
+                        type: number
+                      bounce_rate:
+                        type: number
+                      count_injected:
+                        type: number
+                      count_accepted:
+                        type: number
+                      count_delivered:
+                        type: number
+                      count_unique_rendered:
+                        type: number
+                      count_rendered:
+                        type: number
+                      count_clicked:
+                        type: number
+                      count_unique_clicked:
+                        type: number
+                      count_bounce:
+                        type: number
+                      count_hard_bounce:
+                        type: number
+                      count_soft_bounce:
+                        type: number
+                      count_rejected:
+                        type: number
+                      count_spam_complaint:
+                        type: number
+                example:
+                  stats:
+                    open_rate: 85.71
+                    click_rate: 0
+                    ctr: 0
+                    bounce_rate: 0
+                    count_injected: 21
+                    count_accepted: 21
+                    count_delivered: 21
+                    count_unique_rendered: 18
+                    count_rendered: 126
+                    count_clicked: 0
+                    count_unique_clicked: 0
+                    count_bounce: 0
+                    count_hard_bounce: 0
+                    count_soft_bounce: 0
+                    count_rejected: 0
+                    count_spam_complaint: 0
+              examples:
+                response:
+                  value:
+                    stats:
+                      open_rate: 85.71
+                      click_rate: 0
+                      ctr: 0
+                      bounce_rate: 0
+                      count_injected: 21
+                      count_accepted: 21
+                      count_delivered: 21
+                      count_unique_rendered: 18
+                      count_rendered: 126
+                      count_clicked: 0
+                      count_unique_clicked: 0
+                      count_bounce: 0
+                      count_hard_bounce: 0
+                      count_soft_bounce: 0
+                      count_rejected: 0
+                      count_spam_complaint: 0
+      summary: Transactional emails stats
+      operationId: Transactional emails stats
+      description: Statistics for transactional emails for the past 6 months.
+      tags:
+        - Transactional emails
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  /transactional/stats/doi:
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stats:
+                    type: object
+                    properties:
+                      open_rate:
+                        type: number
+                      click_rate:
+                        type: number
+                      ctr:
+                        type: number
+                      bounce_rate:
+                        type: number
+                      count_injected:
+                        type: number
+                      count_accepted:
+                        type: number
+                      count_delivered:
+                        type: number
+                      count_unique_rendered:
+                        type: number
+                      count_rendered:
+                        type: number
+                      count_clicked:
+                        type: number
+                      count_unique_clicked:
+                        type: number
+                      count_bounce:
+                        type: number
+                      count_hard_bounce:
+                        type: number
+                      count_soft_bounce:
+                        type: number
+                      count_rejected:
+                        type: number
+                      count_spam_complaint:
+                        type: number
+                example:
+                  stats:
+                    open_rate: 69.34
+                    click_rate: 81.01
+                    ctr: 116.83
+                    bounce_rate: 2.52
+                    count_injected: 449
+                    count_accepted: 437
+                    count_delivered: 437
+                    count_unique_rendered: 303
+                    count_rendered: 545
+                    count_clicked: 417
+                    count_unique_clicked: 354
+                    count_bounce: 11
+                    count_hard_bounce: 4
+                    count_soft_bounce: 1
+                    count_rejected: 0
+                    count_spam_complaint: 0
+              examples:
+                response:
+                  value:
+                    stats:
+                      open_rate: 69.34
+                      click_rate: 81.01
+                      ctr: 116.83
+                      bounce_rate: 2.52
+                      count_injected: 449
+                      count_accepted: 437
+                      count_delivered: 437
+                      count_unique_rendered: 303
+                      count_rendered: 545
+                      count_clicked: 417
+                      count_unique_clicked: 354
+                      count_bounce: 11
+                      count_hard_bounce: 4
+                      count_soft_bounce: 1
+                      count_rejected: 0
+                      count_spam_complaint: 0
+      summary: Double opt-in stats
+      operationId: Double opt-in stats
+      description: Statistics for double opt-in emails for the past 6 months.
+      tags:
+        - Transactional emails
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  /tracker/transaction:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                  email:
+                    type: string
+                  shop:
+                    type: string
+                  amount:
+                    type: number
+                  tax:
+                    type: number
+                  shipping:
+                    type: number
+                  city:
+                    type: string
+                  county:
+                    type: string
+                  country:
+                    type: string
+                  timestamp:
+                    type: string
+                  id:
+                    type: number
+                  status:
+                    type: string
+                example:
+                  order_id: transaction_1234
+                  email: foo@bar.cz
+                  shop: myshop.cz
+                  amount: 1500
+                  tax: 200
+                  shipping: 100
+                  city: Praha
+                  county: Hlavní město Praha
+                  country: Česká republika
+                  timestamp: 2015-09-10 17:25:35
+                  id: 1
+                  status: completed
+              examples:
+                response:
+                  value:
+                    order_id: transaction_1234
+                    email: foo@bar.cz
+                    shop: myshop.cz
+                    amount: 1500
+                    tax: 200
+                    shipping: 100
+                    city: Praha
+                    county: Hlavní město Praha
+                    country: Česká republika
+                    timestamp: 2015-09-10 17:25:35
+                    id: 1
+                    status: completed
+        "422":
+          description: Unprocessable Entity
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      transaction.order_id:
+                        type: array
+                        items:
+                          type: string
+                example:
+                  errors:
+                    transaction.order_id:
+                      - The transaction.order id has already been taken.
+              examples:
+                response:
+                  value:
+                    errors:
+                      transaction.order_id:
+                        - The transaction.order id has already been taken.
+      summary: Create a new transaction
+      operationId: Create a new transaction
+      description: ""
+      tags:
+        - Transactions
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction:
+                  type: object
+                  properties:
+                    order_id:
+                      type: string
+                    email:
+                      type: string
+                    shop:
+                      type: string
+                    amount:
+                      type: number
+                    tax:
+                      type: number
+                    shipping:
+                      type: number
+                    city:
+                      type: string
+                    county:
+                      type: string
+                    country:
+                      type: string
+                    timestamp:
+                      type: number
+                    props:
+                      type: object
+                      properties:
+                        myCustomProp:
+                          type: string
+                    status:
+                      type: string
+                transaction_items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      title:
+                        type: string
+                      category:
+                        type: string
+                      price:
+                        type: number
+                      amount:
+                        type: number
+                      tags:
+                        type: array
+                        items:
+                          type: string
+              example:
+                transaction:
+                  order_id: transaction_1234
+                  email: foo@bar.cz
+                  shop: myshop.cz
+                  amount: 1500
+                  tax: 200
+                  shipping: 100
+                  city: Praha
+                  county: Hlavní město Praha
+                  country: Česká republika
+                  timestamp: 1441905935
+                  props:
+                    myCustomProp: customPropValue
+                  status: completed
+                transaction_items:
+                  - code: product code
+                    title: product name
+                    category: product category
+                    price: 1500
+                    amount: 1
+                    tags:
+                      - M
+                      - 3+
+                      - puzzle
+  /tracker/transaction-bulk:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inserts:
+                    type: number
+                example:
+                  inserts: 2
+              examples:
+                response:
+                  value:
+                    inserts: 2
+      summary: Create bulk transactions
+      operationId: Create bulk transactions
+      description: ""
+      tags:
+        - Transactions
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      transaction:
+                        type: object
+                        properties:
+                          order_id:
+                            type: string
+                          email:
+                            type: string
+                          shop:
+                            type: string
+                          amount:
+                            type: number
+                          tax:
+                            type: number
+                          shipping:
+                            type: number
+                          timestamp:
+                            type: number
+                          props:
+                            type: object
+                            properties:
+                              myCustomProp:
+                                type: string
+                              myCustomProps2:
+                                type: string
+                          status:
+                            type: string
+                      transaction_items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            title:
+                              type: string
+                            category:
+                              type: string
+                            price:
+                              type: number
+                            amount:
+                              type: string
+                            tags:
+                              type: array
+                              items:
+                                type: string
+                          required:
+                            - code
+                            - title
+                            - category
+                            - price
+                            - amount
+                            - tags
+                    required:
+                      - transaction
+                      - transaction_items
+              example:
+                transaction_data:
+                  - transaction:
+                      order_id: transaction_1001
+                      email: foo@bar.cz
+                      shop: myshop.cz
+                      amount: 1000
+                      tax: 200
+                      shipping: 100
+                      timestamp: 1673342224
+                      props:
+                        myCustomProp: customPropValue
+                      status: completed
+                    transaction_items:
+                      - code: product code 1
+                        title: product name 1
+                        category: product category 1
+                        price: 400
+                        amount: "1"
+                        tags:
+                          - S
+                          - 3+
+                          - puzzle
+                      - code: product code 2
+                        title: product name 2
+                        category: product category 2
+                        price: 300
+                        amount: "1"
+                        tags:
+                          - M
+                          - 5+
+                          - puzzle
+                      - code: product code 3
+                        title: product name 3
+                        category: product category 3
+                        price: 200
+                        amount: "1"
+                        tags:
+                          - L
+                          - 8+
+                          - puzzle
+                  - transaction:
+                      order_id: transaction_1002
+                      email: foo2@bar.cz
+                      shop: myshop.cz
+                      amount: 1500
+                      tax: 200
+                      shipping: 100
+                      timestamp: 1678342456
+                      props:
+                        myCustomProp: customPropValue
+                        myCustomProps2: customPropValue2
+                      status: pending
+                    transaction_items:
+                      - code: product code 1
+                        title: product name 1
+                        category: product category 1
+                        price: 800
+                        amount: "1"
+                      - code: product code 2
+                        title: product name 2
+                        category: product category 2
+                        price: 600
+                        amount: "1"
+  "/tracker/transaction/{id}":
+    put:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+      summary: Update transaction
+      operationId: Update transaction
+      description: ""
+      tags:
+        - Transactions
+      parameters:
+        - name: id
+          in: path
+          description: id of order
+          required: true
+          schema:
+            type: integer
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction:
+                  type: object
+                  properties:
+                    order_id:
+                      type: string
+                    email:
+                      type: string
+                    shop:
+                      type: string
+                    amount:
+                      type: number
+                    tax:
+                      type: number
+                    shipping:
+                      type: number
+                    city:
+                      type: string
+                    county:
+                      type: string
+                    country:
+                      type: string
+                    timestamp:
+                      type: number
+                    props:
+                      type: object
+                      properties:
+                        myCustomProp:
+                          type: string
+                transaction_items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      title:
+                        type: string
+                      category:
+                        type: string
+                      price:
+                        type: number
+                      amount:
+                        type: number
+                      tags:
+                        type: array
+                        items:
+                          type: string
+              example:
+                transaction:
+                  order_id: transaction_1234
+                  email: foo@bar.cz
+                  shop: myshop.cz
+                  amount: 1500
+                  tax: 200
+                  shipping: 100
+                  city: Praha
+                  county: Hlavní město Praha
+                  country: Česká republika
+                  timestamp: 1441905935
+                  props:
+                    myCustomProp: customPropValue
+                transaction_items:
+                  - code: product code
+                    title: product name
+                    category: product category
+                    price: 1500
+                    amount: 1
+                    tags:
+                      - L
+                      - 8+
+                      - puzzle
+  "/tracker/transaction/{order_id}/delete":
+    delete:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                example:
+                  deleted: true
+              examples:
+                response:
+                  value:
+                    deleted: true
+      summary: Remove transaction from db
+      operationId: Remove transaction from db
+      description: ""
+      tags:
+        - Transactions
+      parameters:
+        - name: order_id
+          in: path
+          description: order id from your shop
+          required: true
+          schema:
+            type: integer
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/feeds/{feed_id}/refresh":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Your feed is being refreshed
+              examples:
+                response:
+                  value:
+                    message: Your feed is being refreshed
+        "403":
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Account must be marketer+ tariff
+              examples:
+                response:
+                  value:
+                    errors: Account must be marketer+ tariff
+      summary: Update a product feed
+      operationId: Update a product feed
+      description: |-
+        Endpoint to refresh/update a product feed already in an account.
+
+        - Limited to 1 refresh/hour.
+
+        - Only for Marketer+ accounts.
+
+        - Only for product feeds with <50 000 products.
+      tags:
+        - Feeds
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  "/data-feeds/{feed_id}/refresh":
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Your feed is being refreshed
+              examples:
+                response:
+                  value:
+                    message: Your feed is being refreshed
+        "403":
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Account must be marketer+ tariff
+              examples:
+                response:
+                  value:
+                    errors: Account must be marketer+ tariff
+        "422":
+          description: Unprocessable Entity
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                example:
+                  errors: Feed can be refreshed just once per hour
+              examples:
+                response:
+                  value:
+                    errors: Feed can be refreshed just once per hour
+      summary: Update a data feed
+      operationId: Update a data feed
+      description: |-
+        Endpoint to refresh/update a data feed already in an account.
+
+        - Limited to 1 refresh/hour.
+
+        - Only for Marketer+ accounts.
+
+        - Only for data feeds with <50 000 items.
+      tags:
+        - Feeds
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+  /tracker/events:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  email:
+                    type: string
+                  category:
+                    type: string
+                  action:
+                    type: string
+                  label:
+                    type: string
+                  property:
+                    type: string
+                  value:
+                    type: string
+                example:
+                  id: 1234
+                  email: foo@bar.cz
+                  category: category
+                  action: action
+                  label: label
+                  property: property
+                  value: value
+              examples:
+                response:
+                  value:
+                    id: 1234
+                    email: foo@bar.cz
+                    category: category
+                    action: action
+                    label: label
+                    property: property
+                    value: value
+      summary: Create a new event
+      operationId: Create a new event
+      description: ""
+      tags:
+        - Tracker
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    category:
+                      type: string
+                    action:
+                      type: string
+                    label:
+                      type: string
+                    property:
+                      type: string
+                    value:
+                      type: string
+              example:
+                event:
+                  email: foo@bar.cz
+                  category: category
+                  action: action
+                  label: label
+                  property: property
+                  value: value
+  /search:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+      summary: Find contact
+      operationId: Find contact
+      description: ""
+      tags:
+        - Search
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+              example:
+                query: foo@bar.cz
+  /coupons/import:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imported:
+                    type: number
+                  duplicated:
+                    type: number
+                  totalCount:
+                    type: number
+                example:
+                  imported: 4
+                  duplicated: 0
+                  totalCount: 4
+              examples:
+                response:
+                  value:
+                    imported: 4
+                    duplicated: 0
+                    totalCount: 4
+      summary: Import discount coupons
+      operationId: Import discount coupons
+      description: |-
+        Import discount coupons into a default or specific folder.
+
+        - folderId - optional, if not present imports into default folder
+      tags:
+        - Discount coupons
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                folderId:
+                  type: number
+                codes:
+                  type: array
+                  items:
+                    type: string
+                valid_until:
+                  type: string
+                update_existing:
+                  type: boolean
+              example:
+                folderId: 1
+                codes:
+                  - kod1
+                  - kod2
+                  - kod3
+                  - kod4
+                valid_until: YYYY-MM-DD
+                update_existing: false
+  /coupons/delete:
+    delete:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: number
+                  invalid:
+                    type: number
+                example:
+                  deleted: 4
+                  invalid: 0
+              examples:
+                response:
+                  value:
+                    deleted: 4
+                    invalid: 0
+      summary: Delete discount coupons
+      operationId: Delete discount coupons
+      description: |-
+        Delete discount coupons in default or specific folder.
+
+        - folderId - optional, if not present deletes from default folder
+      tags:
+        - Discount coupons
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                folderId:
+                  type: number
+                codes:
+                  type: array
+                  items:
+                    type: string
+              example:
+                folderId: 1
+                codes:
+                  - code1
+                  - code2
+                  - code3
+                  - code4
+  /account/settings/webhook:
+    post:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                example:
+                  success: true
+              examples:
+                response:
+                  value:
+                    success: true
+      summary: Set webhook url
+      operationId: Set webhook url
+      description: ""
+      tags:
+        - Webhook
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+              example:
+                url: https://your-webhook-url.com
+    get:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  webhook:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                example:
+                  webhook:
+                    url: https://your-webhook-url.com
+              examples:
+                response:
+                  value:
+                    webhook:
+                      url: https://your-webhook-url.com
+      summary: Get webhook url
+      operationId: Get webhook url
+      description: ""
+      tags:
+        - Webhook
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+    delete:
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                example:
+                  success: true
+              examples:
+                response:
+                  value:
+                    success: true
+      summary: Delete webhook url
+      operationId: Delete webhook url
+      description: ""
+      tags:
+        - Webhook
+      parameters:
+        - name: key
+          in: header
+          description: e.g. API_KEY
+          required: false
+          example: API_KEY
+          schema:
+            type: string
+tags:
+  - name: Lists
+    description: Working with subscriber lists.
+  - name: Subscribers
+    description: Endpoints for working with subscribers globally across an account.
+  - name: Campaigns
+    description: |-
+      Endpoints for working with campaigns.
+
+      Status codes of a campaign:
+      0 - Draft
+      1 - Preparing
+      2 - Sending
+      3 - Sent
+      4 - Errored
+      7 - Scheduled
+  - name: Automations
+    description: Endpoints for working with automations in the applications.
+  - name: Templates
+    description: Endpoints for working with templates in the application.
+  - name: Domains
+    description: Endpoints for working with domains to be used with the account.
+  - name: Transactional emails
+    description: >-
+      Endpoints for sending transactional emails. **Only for paid accounts with
+      a verified sending domain.**
+
+
+      Total data limit for sent merge tags is ```100 000 bytes```
+
+
+      Message size (including attachments) limit under ```4 MB```
+
+
+      ---
+
+
+      + _subject, from_name, from_email, to [{email}]_ - **required**
+
+
+      + _html_ or _text_ - **required**
+
+
+      ---
+
+
+      Following variables (merge tags) are reserved by our sender:
+
+
+      + _address.name_ – Name from the recipient details.
+
+
+      + _email, email_id, and address.email_ – Email address from recipient details.
+
+
+      + _env_from_ – Return-Path address, sometimes called a "bounce address" or "envelope sender address"
+
+      ---
+
+
+      When using HTML code in global merge vars, use ```{ }``` around the tag in html content.
+
+
+      Example - merge tag with value ```<b>Bold text</b>```:
+
+
+      ```{*|htmlcode|*}``` results in: **Bold text**
+
+
+      ```*|htmlcode|*``` results in: ```<b>Bold text</b>```
+  - name: Transactions
+    description: |-
+      Endpoints for transactions.
+      Timestamp is saved and returned in UTC+0.
+  - name: Feeds
+  - name: Tracker
+    description: Events tracker, supplements  [javascript
+      tracker](https://support.ecomail.cz/cs/articles/66729-implementace-trackovaciho-kodu).
+  - name: Search
+    description: Search for a subscriber globally across an account.
+  - name: Discount coupons
+  - name: Webhook
+    description: Working with webhook for sending events from campaigns such as
+      opens, deliveries, clicks etc.
+servers:
+  - url: https://api2.ecomailapp.cz
+components:
+  requestBodies:
+    Remove_subscriber_from_listBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+            example:
+              email: foo@bar.cz
+    Create_a_new_domainBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+            example:
+              name: newdomain.cz
+  schemas:
+    List: {}
+    Campaign: {}
+    Domain: {}
+    Events: {}
+    Search: {}
+    Import: {}
+    Delete: {}
+    List_Collections: {}
+    List_subscribers: {}
+    Get_subscriber: {}
+    Get_subscriber_by_phone: {}
+    List_subscribe: {}
+    List_unsubscribe: {}
+    Subscriber_update: {}
+    List_subscribe_bulk: {}
+    Delete_subscriber: {}
+    Campaigns_Collection: {}
+    Send_campaign: {}
+    Get_campaign_stats: {}
+    Get_campaign_stats-detail: {}
+    Automations_Collection: {}
+    Trigger_automation: {}
+    Get_automation_stats: {}
+    Get_automation_stats-detail: {}
+    Template_Collection: {}
+    Get_Template: {}
+    Domains_Collection: {}
+    Send_transactional_email: {}
+    Send_transactional_template: {}
+    Transactional_emails_stats: {}
+    Double_opt-in_stats: {}
+    Add_transaction: {}
+    Add_bulk_transactions: {}
+    Update_transaction: {}
+    Delete_transaction: {}
+    Product_feeds: {}
+    Data_feeds: {}
+    Webhook_Settings: {}

@@ -1,0 +1,9 @@
+# see https://openapi-generator.tech/docs/generators/php/
+## https://openapi-generator.tech/docs/globals/
+---
+composerPackageName: "stejskytom/ecomail-sdk"
+appDescription: "PHP client pro připojení s Ecomail"
+appDescriptionWithNewLines: "PHP client pro připojení s Ecomail"
+version: "1.0"
+invokerPackage: "StejskyTom\\Ecomail"
+packageName: "stejskytom/ecomail-php-sdk"
